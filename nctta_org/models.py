@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 """
 Players can be parsed from the spreadsheet
@@ -31,3 +32,18 @@ Region
 - director?
 
 """
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    college = models.ForeignKey("College", blank=True, null=True)
+    is_captain = models.BooleanField(default=False)
+
+    def __unicode__(self):
+        return unicode(self.user)
+
+class College(models.Model):
+    long_name = models.CharField(max_length=255)
+    short_name = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return self.short_name

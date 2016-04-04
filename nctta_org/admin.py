@@ -1,3 +1,5 @@
 from django.contrib import admin
+from nctta_org.models import Profile, College
 
-# Register your models here.
+admin.site.register(Profile)
+admin.site.register(College)

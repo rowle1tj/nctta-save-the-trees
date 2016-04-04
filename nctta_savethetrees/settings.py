@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "tournaments"
+    "tournaments",
+    'nctta_org'
 )
 
 MIDDLEWARE_CLASSES = (

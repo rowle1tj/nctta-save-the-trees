@@ -4,4 +4,5 @@ $(document).ready(function(){
 		$('#modal1').openModal();
 	});
 	$('select').material_select();
+
 });

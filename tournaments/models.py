@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from tournaments.utility_functions import get_rosters_from_excel
+from nctta_org.models import College
 
 # Create your models here.
 class Tournament(models.Model):
@@ -90,12 +91,14 @@ class Tournament(models.Model):
             roster.tournament = self
             roster.save()
 
+
         super(Tournament, self).save(*args, **kwargs)
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
     label = models.CharField(max_length=255)
     owning_user = models.ForeignKey(User, blank=True, null=True)
+    college = models.ForeignKey(College, blank=True, null=True)
     tournament = models.ForeignKey("Tournament")
 
     def __unicode__(self):
@@ -119,5 +122,13 @@ class Roster(models.Model):
     active_team = models.CharField(max_length=255, choices=(("left", "left"), ("right", "right")))
     tournament = models.ForeignKey("Tournament", blank=True, null=True)
 
+    player1 = models.ForeignKey("TeamPlayer", related_name="player1", blank=True, null=True)
+    player2 = models.ForeignKey("TeamPlayer", related_name="player2", blank=True, null=True)
+    player3 = models.ForeignKey("TeamPlayer", related_name="player3", blank=True, null=True)
+    player4 = models.ForeignKey("TeamPlayer", related_name="player4", blank=True, null=True)
+    doubles_partner = models.ForeignKey("TeamPlayer", blank=True, null=True)
+    completed_datetime = models.DateTimeField(blank=True, null=True)
+
     def __unicode__(self):
         return self.round_match + " - " + self.active_team
+
