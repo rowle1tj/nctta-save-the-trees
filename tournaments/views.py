@@ -5,6 +5,7 @@ from django.db.models import Q
 # Create your views here.
 def index(request):
     # get a list of rosters if the logged in user is the captain
+    context = {}
     if request.user.is_authenticated():
         if request.user.profile.is_captain:
             profile = request.user.profile
@@ -13,14 +14,10 @@ def index(request):
                 Q(right_team__college=profile.college, active_team='right')
             )
 
-            for roster in incomplete_rosters:
-                if roster.active_team == 'left':
-                    print roster.left_team
-                else:
-                    print roster.right_team
+            context['incomplete_rosters'] = incomplete_rosters
 
 
-    context = {}
+
     return render(request, 'tournaments/home_page.html', context)
 
 def index_old(request):

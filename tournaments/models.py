@@ -132,3 +132,17 @@ class Roster(models.Model):
     def __unicode__(self):
         return self.round_match + " - " + self.active_team
 
+    def get_active_players(self):
+        if self.active_team == 'left':
+            return TeamPlayer.objects.filter(team=self.left_team).order_by('order_id')
+        else:
+            return TeamPlayer.objects.filter(team=self.right_team).order_by('order_id')
+
+
+    def get_opponent_players(self):
+        if self.active_team == 'left':
+            return TeamPlayer.objects.filter(team=self.right_team).order_by('order_id')
+        else:
+            return TeamPlayer.objects.filter(team=self.left_team).order_by('order_id')
+                
+            
