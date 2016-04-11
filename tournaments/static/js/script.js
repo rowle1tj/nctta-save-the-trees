@@ -3,6 +3,7 @@ $(document).ready(function(){
     $('.roster-fill-in').click(function() {
 		$('#modal1').openModal();
 	});
-	$('select').material_select();
+	//$('select').material_select();
+
 
 });

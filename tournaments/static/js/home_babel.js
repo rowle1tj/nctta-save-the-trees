@@ -1,34 +1,14 @@
-var data = [
-    {
-        itemText: 'Fill out Roster - CMU A vs MSU A',
-        leftTeamName: 'CMU A',
-        rightTeamName: 'MSU A',
-        players: [
-            'D1 - Li, Wei',
-            'D2 - Huang, Hanye',
-            'D3 - Emborsky, Eric',
-            'D4 - Cvetkovski, Steven'
-        ],
-        opponents: [
-            '(1894) Lu, Xiaotian',
-            '(572) Sang, Yifan',
-            '(1586) Lu, Yiqiao'
-        ]
-    },
-    {itemText: 'Item 2'},
-    {itemText: 'Item 3'}
-];  
-
 var ActionItem = React.createClass({
     handleClick: function(event) {
-        console.log(this.props.roster_data);
         ReactDOM.render(
             <RosterModal roster={this.props.roster_data}/>, 
             document.getElementById('modal-container')
         );
         $('#modal1').openModal();
         $('ul.tabs').tabs();
-        $('select').material_select();
+        //$('select').material_select('destroy');
+        //$('select').material_select();
+        //$('select').material_select('destroy');
     },
     render: function() {
         return (
@@ -64,20 +44,20 @@ var RosterModal = React.createClass({
     render: function() {
         var opponents = this.props.roster.opponents.map(function(opponent, i) {
             return (
-                <li className="collection-item">{opponent}</li>
+                <li className="collection-item" key={i+1}>{opponent}</li>
             );
         });
 
         var players = this.props.roster.players.map(function(player, i) {
             return (
-                <a href="#!" className="collection-item">{player}<span className="badge">{i+1}</span></a>
+                <a href="#!" className="collection-item" key={i+1}>{player}<span className="badge">{i+1}</span></a>
             );
         });
 
         var playerOptions = this.props.roster.players.map(function(player, i) {
             if (i > 0) {
                 return (
-                    <option value="{i+1}">{player}</option>
+                    <option value="{i+1}" key={i+1}>{player}</option>
                 );
             }
         });
@@ -104,9 +84,9 @@ var RosterModal = React.createClass({
 
                             <h5>Doubles</h5>
                             <ul id="doubles-list" className="collection">
-                                <li className="collection-item">D1 - Li, Wei</li>
+                                <li className="collection-item">{this.props.roster.players[0]}</li>
                                 <li className="collection-item">
-                                    <select value="1">
+                                    <select >
                                         <option value="" disabled>Select doubles partner</option>
                                         {playerOptions}
                                     </select>

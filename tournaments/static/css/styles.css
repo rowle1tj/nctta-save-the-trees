@@ -1,3 +1,7 @@
 #doubles-list li .select-wrapper, #doubles-list li .select-wrapper input {
 	margin:0px;
 }
+
+body select {
+    display: block;
+}
