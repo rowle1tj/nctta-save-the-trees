@@ -37,11 +37,42 @@ var ActionItemsList = React.createClass({
             </div>
         );
     }
-}); 
+});
+
+var RosterPlayerItem = React.createClass({
+    getInitialState: function() {
+        return {active: false}
+    },
+    handleClick: function(event) {
+        this.props.onClick(event, this);
+    },
+
+    render: function() {
+        return (
+            <a href="#!" className="collection-item" key={this.props.number+1} onClick={this.handleClick}>
+                {this.props.player} <span className="badge">{this.props.number+1}</span>
+            </a>
+        );
+    }
+});
 
 
 var RosterModal = React.createClass({
+    getInitialState: function() {
+        return {numPlayersClicked: 0};
+    },
+
+    playerClick: function(event, player) {
+        console.log(player);
+        console.log(this.state);
+
+        if (this.state.numPlayersClicked < 4) {
+            this.state.numPlayersClicked += 1;
+        }
+    },
+
     render: function() {
+        var thisRosterModal = this;
         var opponents = this.props.roster.opponents.map(function(opponent, i) {
             return (
                 <li className="collection-item" key={i+1}>{opponent}</li>
@@ -50,7 +81,7 @@ var RosterModal = React.createClass({
 
         var players = this.props.roster.players.map(function(player, i) {
             return (
-                <a href="#!" className="collection-item" key={i+1}>{player}<span className="badge">{i+1}</span></a>
+                <RosterPlayerItem player={player} number={i} onClick={thisRosterModal.playerClick} key={player}/>
             );
         });
 
