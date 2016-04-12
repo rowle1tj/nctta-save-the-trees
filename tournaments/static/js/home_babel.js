@@ -67,7 +67,7 @@ var RosterModal = React.createClass({
         console.log(this.state);
 
         if (this.state.numPlayersClicked < 4) {
-            this.state.numPlayersClicked += 1;
+            this.setState({numPlayersClicked: this.state.numPlayersClicked + 1});
         }
     },
 
