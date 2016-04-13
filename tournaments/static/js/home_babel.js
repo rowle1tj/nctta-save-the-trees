@@ -1,11 +1,12 @@
 var ActionItem = React.createClass({
     handleClick: function(event) {
-        ReactDOM.render(
-            <RosterModal roster={this.props.roster_data}/>, 
-            document.getElementById('modal-container')
-        );
-        $('#modal1').openModal();
-        $('ul.tabs').tabs();
+        //ReactDOM.render(
+        //   <RosterModal roster={this.props.roster_data}/>, 
+        //    document.getElementById('modal-container')
+        //);
+        this.props.itemClick(this.props.roster_data);
+        //$('#modal1').openModal();
+        //$('ul.tabs').tabs();
         //$('select').material_select('destroy');
         //$('select').material_select();
         //$('select').material_select('destroy');
@@ -21,10 +22,30 @@ var ActionItem = React.createClass({
 }); 
 
 var ActionItemsList = React.createClass({
+    getInitialState: function() {
+        return {
+            roster_data: {
+                players: [],
+                opponents: [],
+                numPlayersClicked: 0,
+                leftTeamName: '',
+                rightTeamName: ''
+            }
+        }
+    },
+    itemClick: function(roster) {
+        this.setState({roster_data: roster});
+        console.log('actionitemslist itemClick: ');
+        console.log(roster);
+
+        $('#modal1').openModal();
+        $('ul.tabs').tabs();
+    },
     render: function() {
+        var itemClick = this.itemClick;
         var listItems = this.props.data.map(function(listItem, i) {
             return (
-                <ActionItem roster_data={listItem} key={i}></ActionItem>
+                <ActionItem roster_data={listItem} key={i} itemClick={itemClick}></ActionItem>
             );
         });
 
@@ -34,6 +55,7 @@ var ActionItemsList = React.createClass({
             <div className="collection">
                 {listItems} 
             </div>
+            <RosterModal data={this.state.roster_data} />
             </div>
         );
     }
@@ -59,12 +81,28 @@ var RosterPlayerItem = React.createClass({
 
 var RosterModal = React.createClass({
     getInitialState: function() {
-        return {numPlayersClicked: 0};
+        return {
+            players: [],
+            opponents: [],
+            numPlayersClicked: 0,
+            leftTeamName: '',
+            rightTeamName: ''
+        };
     },
 
+    /*componentDidMount: function() {
+        this.setState({
+            players: [],
+            opponents: [],
+            numPlayersClicked: 0,
+            leftTeamName: '',
+            rightTeamName: ''
+        });
+    },*/
+
     playerClick: function(event, player) {
-        console.log(player);
-        console.log(this.state);
+        //console.log(player);
+        //console.log(this.state);
 
         if (this.state.numPlayersClicked < 4) {
             this.setState({numPlayersClicked: this.state.numPlayersClicked + 1});
@@ -73,19 +111,22 @@ var RosterModal = React.createClass({
 
     render: function() {
         var thisRosterModal = this;
-        var opponents = this.props.roster.opponents.map(function(opponent, i) {
+        var opponents = this.state.opponents.map(function(opponent, i) {
             return (
                 <li className="collection-item" key={i+1}>{opponent}</li>
             );
         });
 
-        var players = this.props.roster.players.map(function(player, i) {
+        console.log('rostermodal render: ');
+        console.log(this.state);
+
+        var players = this.state.players.map(function(player, i) {
             return (
                 <RosterPlayerItem player={player} number={i} onClick={thisRosterModal.playerClick} key={player}/>
             );
         });
 
-        var playerOptions = this.props.roster.players.map(function(player, i) {
+        var playerOptions = this.state.players.map(function(player, i) {
             if (i > 0) {
                 return (
                     <option value="{i+1}" key={i+1}>{player}</option>
@@ -97,9 +138,9 @@ var RosterModal = React.createClass({
             <div id="modal1" className="modal modal-fixed-footer">
                 <div className="modal-content">
                     <div className="row center-align valign-wrapper">
-                        <div className="col l5 s5"><h5>{this.props.roster.leftTeamName}</h5></div>
+                        <div className="col l5 s5"><h5>{this.state.leftTeamName}</h5></div>
                         <div className="col l2 s2 valign">vs.</div>
-                        <div className="col l5 s5"><h5>{this.props.roster.rightTeamName}</h5></div>
+                        <div className="col l5 s5"><h5>{this.state.rightTeamName}</h5></div>
                     </div>
                     <div className="row">
                         <div className="col s12">
@@ -115,7 +156,7 @@ var RosterModal = React.createClass({
 
                             <h5>Doubles</h5>
                             <ul id="doubles-list" className="collection">
-                                <li className="collection-item">{this.props.roster.players[0]}</li>
+                                <li className="collection-item">{this.state.players[0]}</li>
                                 <li className="collection-item">
                                     <select >
                                         <option value="" disabled>Select doubles partner</option>
